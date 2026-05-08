@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tahir Kaya İHO - Başvuru Sayacı</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html, body {
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background:
+                radial-gradient(circle at top left, #1b5e20 0%, transparent 30%),
+                radial-gradient(circle at bottom right, #004d40 0%, transparent 30%),
+                linear-gradient(135deg, #021b13, #063b2d, #0b5d48);
+            min-height: 100vh;
+            color: white;
+            position: relative;
+        }
+
+        /* ── Yıldızlar ── */
+        .stars {
+            position: fixed;
+            inset: 0;
+            overflow: hidden;
+            z-index: 0;
+            pointer-events: none;
+        }
+        .star {
+            position: absolute;
+            width: 3px; height: 3px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+        @keyframes twinkle {
+            0%, 100% { opacity: .2; transform: scale(.7); }
+            50%       { opacity: 1;  transform: scale(1.6); }
+        }
+
+        /* ── Işık yansımaları — overflow:hidden ile taşmaz ── */
+        .glows {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+        .glow-blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(90px);
+            opacity: 0;
+            animation: glowPulse var(--dur, 6s) ease-in-out infinite var(--delay, 0s);
+        }
+        .glow-blob:nth-child(1) {
+            width: 340px; height: 340px;
+            background: radial-gradient(circle, #00ffb3, transparent 70%);
+            top: -60px; left: -60px;
+            --dur: 7s; --delay: 0s;
+        }
+        .glow-blob:nth-child(2) {
+            width: 280px; height: 280px;
+            background: radial-gradient(circle, #ffd54f, transparent 70%);
+            top: 10%; right: -40px;
+            --dur: 9s; --delay: -3s;
+        }
+        .glow-blob:nth-child(3) {
+            width: 320px; height: 320px;
+            background: radial-gradient(circle, #40e0d0, transparent 70%);
+            bottom: 5%; left: 20%;
+            --dur: 8s; --delay: -5s;
+        }
+        .glow-blob:nth-child(4) {
+            width: 200px; height: 200px;
+            background: radial-gradient(circle, #ff7043, transparent 70%);
+            bottom: 10%; right: 5%;
+            --dur: 6s; --delay: -2s;
+        }
+        @keyframes glowPulse {
+            0%, 100% { opacity: 0;    transform: scale(.85); }
+            50%       { opacity: .22; transform: scale(1.1); }
+        }
+
+        /* ── Layout ── */
+        .container {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 1100px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            backdrop-filter: blur(15px);
+            border-radius: 35px;
+            overflow: hidden;
+            box-shadow:
+                0 10px 40px rgba(0,0,0,0.4),
+                inset 0 0 30px rgba(255,255,255,0.05);
+        }
+
+        .top {
+            padding: 50px 40px;
+            text-align: center;
+            position: relative;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 10px 22px;
+            background: linear-gradient(45deg, #ffd54f, #ffb300);
+            color: #1b1b1b;
+            border-radius: 999px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50%       { transform: scale(1.05); }
+        }
+
+        .school {
+            font-size: 48px;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 15px;
+            text-shadow: 0 4px 15px rgba(0,0,0,.3);
+        }
+
+        .title {
+            font-size: 28px;
+            font-weight: 600;
+            color: #ffe082;
+            margin-bottom: 30px;
+        }
+
+        .counter-area {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        /* ── Sayaç dairesi ── */
+        .counter-box {
+            width: 280px; height: 280px;
+            border-radius: 50%;
+            background: radial-gradient(circle at top, #2e7d32, #0d3d24);
+            border: 10px solid rgba(255,255,255,.12);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            flex-shrink: 0;
+            box-shadow:
+                0 0 40px rgba(0,255,150,.25),
+                inset 0 0 30px rgba(255,255,255,.06);
+            animation: float 4s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50%       { transform: translateY(-10px); }
+        }
+        .counter-box::before {
+            content: '';
+            position: absolute;
+            inset: -12px;
+            border-radius: 50%;
+            border: 3px dashed rgba(255,255,255,.25);
+            animation: spin 20s linear infinite;
+        }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to   { transform: rotate(360deg); }
+        }
+
+        .counter {
+            font-size: 90px;
+            font-weight: 800;
+            color: #fff;
+            line-height: 1;
+            text-shadow: 0 0 20px rgba(255,255,255,.5);
+            transition: transform .3s, color .2s;
+        }
+
+        /* ── "Başvuru" yazısı — ripple tıklama ── */
+        .counter-text {
+            margin-top: 10px;
+            font-size: 22px;
+            color: #ffe082;
+            font-weight: 600;
+            position: relative;
+            cursor: pointer;
+            user-select: none;
+            padding: 6px 20px;
+            border-radius: 999px;
+            overflow: hidden;
+            transition: background .2s;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .counter-text:hover { background: rgba(255,255,255,.12); }
+
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255,255,255,.45);
+            transform: scale(0);
+            animation: rippleAnim .65s linear forwards;
+            pointer-events: none;
+        }
+        @keyframes rippleAnim {
+            to { transform: scale(4); opacity: 0; }
+        }
+
+        /* ── Bilgi paneli ── */
+        .info {
+            flex: 1;
+            min-width: 280px;
+            text-align: left;
+        }
+
+        .info-card {
+            background: rgba(255,255,255,.08);
+            padding: 25px;
+            border-radius: 25px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255,255,255,.1);
+            transition: .3s;
+        }
+        .info-card:hover { transform: translateY(-5px); background: rgba(255,255,255,.12); }
+        .info-card h3 { color: #ffd54f; margin-bottom: 10px; font-size: 24px; }
+        .info-card p  { color: #f1f1f1; line-height: 1.7; }
+
+        .progress-section { margin-top: 40px; }
+        .progress-title   { font-size: 22px; margin-bottom: 15px; font-weight: 600; }
+
+        .progress {
+            width: 100%; height: 30px;
+            background: rgba(255,255,255,.1);
+            border-radius: 999px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            width: 0%; height: 100%;
+            border-radius: 999px;
+            background: linear-gradient(90deg, #ffd54f, #ff9800, #ff7043);
+            box-shadow: 0 0 20px rgba(255,193,7,.5);
+            transition: width .8s ease;
+        }
+
+        /* ── Buton ── */
+        .btn {
+            margin-top: 30px;
+            display: inline-block;
+            padding: 18px 35px;
+            background: linear-gradient(45deg, #ffb300, #ff7043);
+            color: white;
+            font-size: 20px;
+            font-weight: 700;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(255,152,0,.4);
+            transition: .3s;
+            cursor: pointer;
+            border: none;
+            font-family: 'Poppins', sans-serif;
+            position: relative;
+            overflow: hidden;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .btn:hover  { transform: translateY(-4px) scale(1.03); }
+        .btn:active { transform: scale(0.97); }
+
+        .plus-one {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%,-50%);
+            font-size: 26px; font-weight: 800;
+            color: #fff;
+            pointer-events: none;
+            opacity: 0;
+            animation: riseUp .8s ease forwards;
+        }
+        @keyframes riseUp {
+            0%   { opacity: 1; transform: translate(-50%,-50%) scale(1); }
+            80%  { opacity: 1; transform: translate(-50%,-140%) scale(1.3); }
+            100% { opacity: 0; transform: translate(-50%,-160%) scale(1.1); }
+        }
+
+        /* ── Konfeti canvas ── */
+        #confettiCanvas {
+            position: fixed;
+            inset: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        .bottom {
+            background: rgba(0,0,0,.18);
+            padding: 30px;
+            text-align: center;
+            font-size: 22px;
+            font-weight: 600;
+            border-top: 1px solid rgba(255,255,255,.1);
+        }
+
+        /* ── Tablet ── */
+        @media(max-width: 768px) {
+            .container    { padding: 16px; align-items: flex-start; }
+            .card         { border-radius: 24px; }
+            .top          { padding: 32px 20px; }
+            .badge        { font-size: 13px; padding: 8px 16px; }
+            .school       { font-size: 30px; }
+            .title        { font-size: 18px; margin-bottom: 20px; }
+            .counter-area { flex-direction: column; gap: 20px; margin-top: 20px; }
+            .counter-box  { width: 220px; height: 220px; }
+            .counter      { font-size: 68px; }
+            .counter-text { font-size: 18px; }
+            .info         { width: 100%; min-width: unset; text-align: center; }
+            .info-card    { padding: 18px; border-radius: 18px; text-align: left; }
+            .info-card h3 { font-size: 18px; }
+            .info-card p  { font-size: 14px; }
+            .progress-section { margin-top: 24px; }
+            .progress-title   { font-size: 16px; }
+            .progress     { height: 22px; }
+            .btn          { width: 100%; font-size: 18px; padding: 16px 20px; margin-top: 20px; }
+            .bottom       { font-size: 14px; padding: 18px 16px; }
+            .glow-blob:nth-child(1) { width: 200px; height: 200px; }
+            .glow-blob:nth-child(2) { width: 160px; height: 160px; }
+            .glow-blob:nth-child(3) { width: 180px; height: 180px; }
+            .glow-blob:nth-child(4) { width: 120px; height: 120px; }
+        }
+
+        /* ── Küçük telefon ── */
+        @media(max-width: 420px) {
+            .container    { padding: 10px; }
+            .top          { padding: 24px 14px; }
+            .badge        { font-size: 11px; padding: 6px 12px; margin-bottom: 12px; }
+            .school       { font-size: 24px; }
+            .title        { font-size: 15px; }
+            .counter-box  { width: 180px; height: 180px; border-width: 7px; }
+            .counter-box::before { inset: -9px; }
+            .counter      { font-size: 54px; }
+            .counter-text { font-size: 15px; }
+            .info-card    { padding: 14px; border-radius: 14px; margin-bottom: 12px; }
+            .info-card h3 { font-size: 16px; }
+            .info-card p  { font-size: 13px; }
+            .progress     { height: 18px; }
+            .progress-title { font-size: 14px; margin-bottom: 10px; }
+            .btn          { font-size: 16px; padding: 14px 16px; border-radius: 12px; }
+            .bottom       { font-size: 12px; padding: 14px 12px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="stars" id="stars"></div>
+
+<div class="glows">
+    <div class="glow-blob"></div>
+    <div class="glow-blob"></div>
+    <div class="glow-blob"></div>
+    <div class="glow-blob"></div>
+</div>
+
+<canvas id="confettiCanvas"></canvas>
+
+<div class="container">
+    <div class="card">
+        <div class="top">
+
+            <div class="badge">2026 İNGİLİZCE PROJE SINIFI</div>
+
+            <div class="school">TAHİR KAYA<br>İMAM HATİP ORTAOKULU</div>
+
+            <div class="title">Başvurular Yoğun İlgi Görüyor</div>
+
+            <div class="counter-area">
+
+                <div class="counter-box" id="counterBox">
+                    <div class="counter" id="counter">0</div>
+                    <div class="counter-text" id="counterText">Başvuru</div>
+                </div>
+
+                <div class="info">
+
+                    <div class="info-card">
+                        <h3>📌 Kontenjan</h3>
+                        <p>50 kız + 50 erkek öğrenci alınacaktır.</p>
+                    </div>
+
+                    <div class="info-card">
+                        <h3>📅 Sınav Tarihi</h3>
+                        <p>10 Mayıs 2026 Pazar<br>Saat 10.00</p>
+                    </div>
+
+                    <div class="progress-section">
+                        <div class="progress-title">Başvuru Doluluk Oranı</div>
+                        <div class="progress">
+                            <div class="progress-fill" id="progressFill"></div>
+                        </div>
+                    </div>
+
+                    <button class="btn" id="applyBtn">Hemen Başvur</button>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="bottom">
+            Tahir Kaya İHO İngilizce Proje Sınıfı Giriş Sınavı
+        </div>
+    </div>
+</div>
+
+<script>
+/* ══════════ AYARLAR ══════════ */
+const FORM_URL    = "https://docs.google.com/forms/d/e/1FAIpQLSdDw3E1q6AY-wvwvXmoq5vbflJofPN-OW0UVBdFseLySR8Ntw/viewform";
+const BASE_COUNT  = 361;
+const KONTENJAN   = 100;
+const STORAGE_KEY = "basvuruSayisi";
+const MILESTONES  = new Set([61, 161, 261, 361]);
+
+/* ══════════ SAYAÇ ══════════ */
+const counterEl    = document.getElementById("counter");
+const progressFill = document.getElementById("progressFill");
+const applyBtn     = document.getElementById("applyBtn");
+const counterText  = document.getElementById("counterText");
+const counterBox   = document.getElementById("counterBox");
+
+let savedExtra = parseInt(localStorage.getItem(STORAGE_KEY) || "0");
+let count      = BASE_COUNT + savedExtra;
+
+function updateProgress(n) {
+    progressFill.style.width = Math.min((n / KONTENJAN) * 100, 100) + "%";
+}
+
+/* animateTo — isteğe bağlı onDone callback */
+function animateTo(from, to, duration, onDone) {
+    const t0 = performance.now();
+    (function step(now) {
+        const p = Math.min((now - t0) / duration, 1);
+        counterEl.textContent = Math.round(from + (to - from) * (1 - Math.pow(1 - p, 3)));
+        if (p < 1) { requestAnimationFrame(step); }
+        else if (onDone) { onDone(); }
+    })(performance.now());
+}
+
+/* Sayaç kutusunun merkezinden 3 dalgalı milestone patlaması */
+function milestoneBlast() {
+    const r  = counterBox.getBoundingClientRect();
+    const cx = r.left + r.width  / 2;
+    const cy = r.top  + r.height / 2;
+    launchConfetti(130, cx, cy);
+    setTimeout(() => launchConfetti(90, cx, cy), 200);
+    setTimeout(() => launchConfetti(70, cx, cy), 420);
+    /* Sayaç kutusu altın ışıkla parlar */
+    counterBox.style.transition = "box-shadow .15s";
+    counterBox.style.boxShadow  = "0 0 90px rgba(255,215,0,.95), inset 0 0 40px rgba(255,255,255,.2)";
+    setTimeout(() => {
+        counterBox.style.boxShadow = "0 0 40px rgba(0,255,150,.25), inset 0 0 30px rgba(255,255,255,.06)";
+    }, 700);
+}
+
+window.addEventListener("load", () => {
+    setTimeout(() => {
+        animateTo(0, count, 1800, () => {
+            if (MILESTONES.has(count)) milestoneBlast();
+        });
+        updateProgress(count);
+    }, 300);
+});
+
+/* ══════════ KONFETİ ══════════ */
+const canvas = document.getElementById("confettiCanvas");
+const ctx    = canvas.getContext("2d");
+let   pieces = [];
+let   rafId  = null;
+
+function resizeCanvas() {
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener("resize", resizeCanvas);
+
+const COLORS = ["#ffd54f","#ff9800","#ff7043","#00e5ff","#69f0ae","#ea80fc","#ff4081","#fff176","#80d8ff"];
+
+function Piece(cx, cy) {
+    this.x     = cx !== undefined ? cx : Math.random() * canvas.width;
+    this.y     = cy !== undefined ? cy : -10;
+    this.r     = Math.random() * 7 + 4;
+    this.color = COLORS[Math.floor(Math.random() * COLORS.length)];
+    this.vx    = (Math.random() - .5) * (cx !== undefined ? 18 : 6);
+    this.vy    = cx !== undefined ? (Math.random() - 1) * 16 : Math.random() * 3 + 2;
+    this.spin  = (Math.random() - .5) * .35;
+    this.angle = Math.random() * Math.PI * 2;
+    this.shape = Math.random() > .5 ? "circle" : "rect";
+    this.life  = 1;
+    this.decay = Math.random() * .013 + .007;
+}
+Piece.prototype.update = function() {
+    this.x += this.vx; this.y += this.vy;
+    this.vy += .13; this.angle += this.spin;
+    this.life -= this.decay;
+};
+Piece.prototype.draw = function() {
+    ctx.save();
+    ctx.globalAlpha = Math.max(this.life, 0);
+    ctx.translate(this.x, this.y);
+    ctx.rotate(this.angle);
+    ctx.fillStyle = this.color;
+    if (this.shape === "circle") {
+        ctx.beginPath(); ctx.arc(0,0,this.r,0,Math.PI*2); ctx.fill();
+    } else {
+        ctx.fillRect(-this.r, -this.r*.5, this.r*2, this.r);
+    }
+    ctx.restore();
+};
+
+function launchConfetti(n, cx, cy) {
+    for (let i = 0; i < n; i++) pieces.push(new Piece(cx, cy));
+    if (!rafId) loop();
+}
+
+function loop() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    pieces = pieces.filter(p => p.life > 0);
+    pieces.forEach(p => { p.update(); p.draw(); });
+    rafId = pieces.length ? requestAnimationFrame(loop) : null;
+}
+
+/* ══════════ RİPPLE — "Başvuru" yazısı ══════════ */
+counterText.addEventListener("click", function(e) {
+    const rect = this.getBoundingClientRect();
+    const size = Math.max(rect.width, rect.height);
+    const x    = e.clientX - rect.left - size / 2;
+    const y    = e.clientY - rect.top  - size / 2;
+    const rip  = document.createElement("span");
+    rip.className = "ripple";
+    rip.style.cssText = `width:${size}px;height:${size}px;left:${x}px;top:${y}px`;
+    this.appendChild(rip);
+    setTimeout(() => rip.remove(), 700);
+    launchConfetti(40, rect.left + rect.width / 2, rect.top + rect.height / 2);
+});
+
+/* ══════════ BAŞVUR BUTONU ══════════ */
+applyBtn.addEventListener("click", () => {
+    const prev = count;
+    count++; savedExtra++;
+    localStorage.setItem(STORAGE_KEY, savedExtra);
+
+    const isMilestone = MILESTONES.has(count);
+
+    /* Sayaç animasyonu; milestone ise bitince ekstra patlama */
+    animateTo(prev, count, 400, () => {
+        if (isMilestone) milestoneBlast();
+    });
+    updateProgress(count);
+
+    /* Sayı parlar */
+    counterEl.style.color      = "#b9f6ca";
+    counterEl.style.textShadow = "0 0 30px rgba(100,255,180,.9)";
+    setTimeout(() => {
+        counterEl.style.color      = "#fff";
+        counterEl.style.textShadow = "0 0 20px rgba(255,255,255,.5)";
+    }, 400);
+
+    /* Zıplama */
+    counterEl.style.transform = "scale(1.25)";
+    setTimeout(() => { counterEl.style.transform = "scale(1)"; }, 300);
+
+    /* +1 etiketi */
+    const plusOne = document.createElement("span");
+    plusOne.className   = "plus-one";
+    plusOne.textContent = "+1";
+    applyBtn.appendChild(plusOne);
+    setTimeout(() => plusOne.remove(), 850);
+
+    /* Her zaman butondan konfeti patlar */
+    const r  = applyBtn.getBoundingClientRect();
+    const cx = r.left + r.width  / 2;
+    const cy = r.top  + r.height / 2;
+    launchConfetti(isMilestone ? 220 : 130, cx, cy);
+
+    /* Milestone ise sayaç kutusundan da ek patlama */
+    if (isMilestone) {
+        const rb = counterBox.getBoundingClientRect();
+        setTimeout(() => launchConfetti(110, rb.left + rb.width/2, rb.top + rb.height/2), 130);
+    }
+
+    setTimeout(() => window.open(FORM_URL, "_blank"), 350);
+});
+
+/* ══════════ YILDIZLAR ══════════ */
+const starsEl = document.getElementById("stars");
+for (let i = 0; i < 120; i++) {
+    const s = document.createElement("div");
+    s.classList.add("star");
+    s.style.left              = Math.random() * 100 + "%";
+    s.style.top               = Math.random() * 100 + "%";
+    s.style.animationDuration = (Math.random() * 3 + 2) + "s";
+    s.style.opacity           = Math.random();
+    starsEl.appendChild(s);
+}
+</script>
+
+</body>
+</html>
