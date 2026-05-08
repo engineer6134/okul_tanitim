@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tahir Kaya İHO - Başvuru Sayacı</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+            background:
+                radial-gradient(circle at top left, #1b5e20 0%, transparent 30%),
+                radial-gradient(circle at bottom right, #004d40 0%, transparent 30%),
+                linear-gradient(135deg, #021b13, #063b2d, #0b5d48);
+            min-height: 100vh;
+            color: white;
+            position: relative;
+        }
+
+        /* Yıldızlar */
+
+        .stars {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .star {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+
+        @keyframes twinkle {
+
+            0%,
+            100% {
+                opacity: .2;
+                transform: scale(.7);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1.6);
+            }
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 1100px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            border-radius: 35px;
+            overflow: hidden;
+            box-shadow:
+                0 10px 40px rgba(0, 0, 0, 0.4),
+                inset 0 0 30px rgba(255, 255, 255, 0.05);
+        }
+
+        .top {
+            padding: 50px 40px;
+            text-align: center;
+            position: relative;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 10px 22px;
+            background: linear-gradient(45deg, #ffd54f, #ffb300);
+            color: #1b1b1b;
+            border-radius: 999px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .school {
+            font-size: 48px;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 15px;
+            text-shadow: 0 4px 15px rgba(0, 0, 0, .3);
+        }
+
+        .title {
+            font-size: 28px;
+            font-weight: 600;
+            color: #ffe082;
+            margin-bottom: 30px;
+        }
+
+        .counter-area {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .counter-box {
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            background:
+                radial-gradient(circle at top, #2e7d32, #0d3d24);
+            border: 10px solid rgba(255, 255, 255, .12);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            box-shadow:
+                0 0 40px rgba(0, 255, 150, .25),
+                inset 0 0 30px rgba(255, 255, 255, .06);
+            animation: float 4s ease-in-out infinite;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .counter-box::before {
+            content: '';
+            position: absolute;
+            inset: -12px;
+            border-radius: 50%;
+            border: 3px dashed rgba(255, 255, 255, .25);
+            animation: spin 20s linear infinite;
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .counter {
+            font-size: 90px;
+            font-weight: 800;
+            color: #fff;
+            line-height: 1;
+            text-shadow: 0 0 20px rgba(255, 255, 255, .5);
+        }
+
+        .counter-text {
+            margin-top: 10px;
+            font-size: 22px;
+            color: #ffe082;
+            font-weight: 600;
+        }
+
+        .info {
+            flex: 1;
+            min-width: 280px;
+            text-align: left;
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, .08);
+            padding: 25px;
+            border-radius: 25px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, .1);
+            transition: .3s;
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, .12);
+        }
+
+        .info-card h3 {
+            color: #ffd54f;
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+
+        .info-card p {
+            color: #f1f1f1;
+            line-height: 1.7;
+        }
+
+        .progress-section {
+            margin-top: 40px;
+        }
+
+        .progress-title {
+            font-size: 22px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .progress {
+            width: 100%;
+            height: 30px;
+            background: rgba(255, 255, 255, .1);
+            border-radius: 999px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            width: 0%;
+            height: 100%;
+            border-radius: 999px;
+            background:
+                linear-gradient(90deg, #ffd54f, #ff9800, #ff7043);
+            box-shadow: 0 0 20px rgba(255, 193, 7, .5);
+            transition: 2s;
+        }
+
+        .bottom {
+            background: rgba(0, 0, 0, .18);
+            padding: 30px;
+            text-align: center;
+            font-size: 22px;
+            font-weight: 600;
+            border-top: 1px solid rgba(255, 255, 255, .1);
+        }
+
+        .button {
+            margin-top: 30px;
+            display: inline-block;
+            padding: 18px 35px;
+            background: linear-gradient(45deg, #ffb300, #ff7043);
+            color: white;
+            font-size: 20px;
+            font-weight: 700;
+            text-decoration: none;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(255, 152, 0, .4);
+            transition: .3s;
+        }
+
+        .button:hover {
+            transform: translateY(-4px) scale(1.03);
+        }
+
+        .glow {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: #00ffb3;
+            filter: blur(140px);
+            opacity: .18;
+            top: -100px;
+            right: -100px;
+        }
+
+        @media(max-width:768px) {
+
+            .school {
+                font-size: 32px;
+            }
+
+            .title {
+                font-size: 20px;
+            }
+
+            .counter-box {
+                width: 220px;
+                height: 220px;
+            }
+
+            .counter {
+                font-size: 65px;
+            }
+
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="stars" id="stars"></div>
+
+    <div class="glow"></div>
+
+    <div class="container">
+
+        <div class="card">
+
+            <div class="top">
+
+                <div class="badge">
+                    2026 İNGİLİZCE PROJE SINIFI
+                </div>
+
+                <div class="school">
+                    TAHİR KAYA<br>
+                    İMAM HATİP ORTAOKULU
+                </div>
+
+                <div class="title">
+                    Başvurular Yoğun İlgi Görüyor
+                </div>
+
+                <div class="counter-area">
+
+                    <div class="counter-box">
+                        <div class="counter" id="counter">0</div>
+                        <div class="counter-text">Başvuru</div>
+                    </div>
+
+                    <div class="info">
+
+                        <div class="info-card">
+                            <h3>📌 Kontenjan</h3>
+                            <p>
+                                50 kız + 50 erkek öğrenci alınacaktır.
+                            </p>
+                        </div>
+
+                        <div class="info-card">
+                            <h3>📅 Sınav Tarihi</h3>
+                            <p>
+                                10 Mayıs 2026 Pazar<br>
+                                Saat 10.00
+                            </p>
+                        </div>
+
+                        <div class="progress-section">
+
+                            <div class="progress-title">
+                                Başvuru Doluluk Oranı
+                            </div>
+
+                            <div class="progress">
+                                <div class="progress-fill" id="progressFill"></div>
+                            </div>
+
+                        </div>
+
+                        <a class="button"
+                            href="https://docs.google.com/forms/d/e/1FAIpQLSdDw3E1q6AY-wvwvXmoq5vbflJofPN-OW0UVBdFseLySR8Ntw/viewform"
+                            target="_blank">
+
+                            Hemen Başvur
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="bottom">
+                Tahir Kaya İHO İngilizce Proje Sınıfı Giriş Sınavı
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+
+        /* Sayaç */
+
+        const target = 150;
+        const counter = document.getElementById("counter");
+
+        let count = 0;
+
+        const speed = 20;
+
+        const updateCounter = () => {
+
+            if (count < target) {
+
+                count++;
+                counter.innerText = count;
+
+                setTimeout(updateCounter, speed);
+
+            }
+
+        }
+
+        updateCounter();
+
+        /* Progress */
+
+        const progressFill = document.getElementById("progressFill");
+
+        setTimeout(() => {
+
+            progressFill.style.width = "100%";
+
+        }, 500);
+
+        /* Yıldız Efekti */
+
+        const stars = document.getElementById("stars");
+
+        for (let i = 0; i < 120; i++) {
+
+            const star = document.createElement("div");
+
+            star.classList.add("star");
+
+            star.style.left = Math.random() * 100 + "%";
+            star.style.top = Math.random() * 100 + "%";
+
+            star.style.animationDuration =
+                (Math.random() * 3 + 2) + "s";
+
+            star.style.opacity = Math.random();
+
+            stars.appendChild(star);
+
+        }
+
+    </script>
+
+</body>
+
+</html>
