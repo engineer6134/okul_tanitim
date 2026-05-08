@@ -29,8 +29,6 @@
             position: relative;
         }
 
-        /* Yıldızlar */
-
         .stars {
             position: fixed;
             width: 100%;
@@ -51,17 +49,8 @@
         }
 
         @keyframes twinkle {
-
-            0%,
-            100% {
-                opacity: .2;
-                transform: scale(.7);
-            }
-
-            50% {
-                opacity: 1;
-                transform: scale(1.6);
-            }
+            0%, 100% { opacity: .2; transform: scale(.7); }
+            50%       { opacity: 1; transform: scale(1.6); }
         }
 
         .container {
@@ -106,17 +95,9 @@
         }
 
         @keyframes pulse {
-            0% {
-                transform: scale(1);
-            }
-
-            50% {
-                transform: scale(1.05);
-            }
-
-            100% {
-                transform: scale(1);
-            }
+            0%   { transform: scale(1); }
+            50%  { transform: scale(1.05); }
+            100% { transform: scale(1); }
         }
 
         .school {
@@ -147,8 +128,7 @@
             width: 280px;
             height: 280px;
             border-radius: 50%;
-            background:
-                radial-gradient(circle at top, #2e7d32, #0d3d24);
+            background: radial-gradient(circle at top, #2e7d32, #0d3d24);
             border: 10px solid rgba(255, 255, 255, .12);
             display: flex;
             flex-direction: column;
@@ -162,15 +142,8 @@
         }
 
         @keyframes float {
-
-            0%,
-            100% {
-                transform: translateY(0px);
-            }
-
-            50% {
-                transform: translateY(-10px);
-            }
+            0%, 100% { transform: translateY(0px); }
+            50%       { transform: translateY(-10px); }
         }
 
         .counter-box::before {
@@ -183,13 +156,8 @@
         }
 
         @keyframes spin {
-            from {
-                transform: rotate(0deg);
-            }
-
-            to {
-                transform: rotate(360deg);
-            }
+            from { transform: rotate(0deg); }
+            to   { transform: rotate(360deg); }
         }
 
         .counter {
@@ -198,6 +166,7 @@
             color: #fff;
             line-height: 1;
             text-shadow: 0 0 20px rgba(255, 255, 255, .5);
+            transition: transform .3s, color .2s;
         }
 
         .counter-text {
@@ -261,10 +230,9 @@
             width: 0%;
             height: 100%;
             border-radius: 999px;
-            background:
-                linear-gradient(90deg, #ffd54f, #ff9800, #ff7043);
+            background: linear-gradient(90deg, #ffd54f, #ff9800, #ff7043);
             box-shadow: 0 0 20px rgba(255, 193, 7, .5);
-            transition: 2s;
+            transition: width 0.8s ease;
         }
 
         .bottom {
@@ -276,7 +244,8 @@
             border-top: 1px solid rgba(255, 255, 255, .1);
         }
 
-        .button {
+        /* Buton — <a> değil <button> ile yapıldı, tıkta sayaç artar */
+        .btn {
             margin-top: 30px;
             display: inline-block;
             padding: 18px 35px;
@@ -288,10 +257,39 @@
             border-radius: 15px;
             box-shadow: 0 10px 25px rgba(255, 152, 0, .4);
             transition: .3s;
+            cursor: pointer;
+            border: none;
+            font-family: 'Poppins', sans-serif;
+            position: relative;
+            overflow: hidden;
         }
 
-        .button:hover {
+        .btn:hover {
             transform: translateY(-4px) scale(1.03);
+        }
+
+        .btn:active {
+            transform: scale(0.97);
+        }
+
+        /* +1 etiketi */
+        .plus-one {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 26px;
+            font-weight: 800;
+            color: #fff;
+            pointer-events: none;
+            opacity: 0;
+            animation: riseUp 0.8s ease forwards;
+        }
+
+        @keyframes riseUp {
+            0%   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+            80%  { opacity: 1; transform: translate(-50%, -140%) scale(1.3); }
+            100% { opacity: 0; transform: translate(-50%, -160%) scale(1.1); }
         }
 
         .glow {
@@ -306,24 +304,10 @@
         }
 
         @media(max-width:768px) {
-
-            .school {
-                font-size: 32px;
-            }
-
-            .title {
-                font-size: 20px;
-            }
-
-            .counter-box {
-                width: 220px;
-                height: 220px;
-            }
-
-            .counter {
-                font-size: 65px;
-            }
-
+            .school      { font-size: 32px; }
+            .title       { font-size: 20px; }
+            .counter-box { width: 220px; height: 220px; }
+            .counter     { font-size: 65px; }
         }
     </style>
 </head>
@@ -331,27 +315,17 @@
 <body>
 
     <div class="stars" id="stars"></div>
-
     <div class="glow"></div>
 
     <div class="container">
-
         <div class="card">
-
             <div class="top">
 
-                <div class="badge">
-                    2026 İNGİLİZCE PROJE SINIFI
-                </div>
+                <div class="badge">2026 İNGİLİZCE PROJE SINIFI</div>
 
-                <div class="school">
-                    TAHİR KAYA<br>
-                    İMAM HATİP ORTAOKULU
-                </div>
+                <div class="school">TAHİR KAYA<br>İMAM HATİP ORTAOKULU</div>
 
-                <div class="title">
-                    Başvurular Yoğun İlgi Görüyor
-                </div>
+                <div class="title">Başvurular Yoğun İlgi Görüyor</div>
 
                 <div class="counter-area">
 
@@ -364,163 +338,119 @@
 
                         <div class="info-card">
                             <h3>📌 Kontenjan</h3>
-                            <p>
-                                50 kız + 50 erkek öğrenci alınacaktır.
-                            </p>
+                            <p>50 kız + 50 erkek öğrenci alınacaktır.</p>
                         </div>
 
                         <div class="info-card">
                             <h3>📅 Sınav Tarihi</h3>
-                            <p>
-                                10 Mayıs 2026 Pazar<br>
-                                Saat 10.00
-                            </p>
+                            <p>10 Mayıs 2026 Pazar<br>Saat 10.00</p>
                         </div>
 
                         <div class="progress-section">
-
-                            <div class="progress-title">
-                                Başvuru Doluluk Oranı
-                            </div>
-
+                            <div class="progress-title">Başvuru Doluluk Oranı</div>
                             <div class="progress">
                                 <div class="progress-fill" id="progressFill"></div>
                             </div>
-
                         </div>
 
-                        <a class="btn"
-id="applyBtn"
-href="https://docs.google.com/forms/d/e/1FAIpQLSdDw3E1q6AY-wvwvXmoq5vbflJofPN-OW0UVBdFseLySR8Ntw/viewform"
-target="_blank">
-
-Hemen Başvur
-
-</a>
+                        <button class="btn" id="applyBtn">Hemen Başvur</button>
 
                     </div>
-
                 </div>
-
             </div>
 
             <div class="bottom">
                 Tahir Kaya İHO İngilizce Proje Sınıfı Giriş Sınavı
             </div>
-
         </div>
-
     </div>
 
     <script>
+        const FORM_URL    = "https://docs.google.com/forms/d/e/1FAIpQLSdDw3E1q6AY-wvwvXmoq5vbflJofPN-OW0UVBdFseLySR8Ntw/viewform";
+        const BASE_COUNT  = 361;   // başlangıç değeri
+        const KONTENJAN   = 100;   // progress bar baz
+        const STORAGE_KEY = "basvuruSayisi";
 
-        /* Sayaç */
-
-        const target = 361;
-        const counter = document.getElementById("counter");
-
-        let count = 0;
-
-        const speed = 20;
-
-        const updateCounter = () => {
-
-            if (count < target) {
-
-                count++;
-                counter.innerText = count;
-
-                setTimeout(updateCounter, speed);
-
-            }
-
-        }
-
-        updateCounter();
-
-        /* Progress */
-
+        const counterEl    = document.getElementById("counter");
         const progressFill = document.getElementById("progressFill");
+        const applyBtn     = document.getElementById("applyBtn");
 
-        setTimeout(() => {
+        /* localStorage'daki ekstra tıklamalar + başlangıç değeri */
+        let savedExtra = parseInt(localStorage.getItem(STORAGE_KEY) || "0");
+        let count      = BASE_COUNT + savedExtra;
 
-            progressFill.style.width = "100%";
-
-        }, 500);
-
-        /* Yıldız Efekti */
-
-        const stars = document.getElementById("stars");
-
-        for (let i = 0; i < 120; i++) {
-
-            const star = document.createElement("div");
-
-            star.classList.add("star");
-
-            star.style.left = Math.random() * 100 + "%";
-            star.style.top = Math.random() * 100 + "%";
-
-            star.style.animationDuration =
-                (Math.random() * 3 + 2) + "s";
-
-            star.style.opacity = Math.random();
-
-            stars.appendChild(star);
-
+        /* Progress güncelle */
+        function updateProgress(n) {
+            const pct = Math.min((n / KONTENJAN) * 100, 100);
+            progressFill.style.width = pct + "%";
         }
-        /* BUTONA BASILINCA SAYI ARTSIN */
 
-const applyBtn =
-document.getElementById("applyBtn");
+        /* Sayacı animasyonla göster */
+        function animateTo(from, to, duration) {
+            const startTime = performance.now();
+            function step(now) {
+                const t       = Math.min((now - startTime) / duration, 1);
+                const eased   = 1 - Math.pow(1 - t, 3);
+                counterEl.textContent = Math.round(from + (to - from) * eased);
+                if (t < 1) requestAnimationFrame(step);
+            }
+            requestAnimationFrame(step);
+        }
 
-/* localStorage'dan kayıtlı sayıyı çek */
+        /* Sayfa açılışında 0'dan başlangıç değerine animasyon */
+        window.addEventListener("load", () => {
+            setTimeout(() => {
+                animateTo(0, count, 1800);
+                updateProgress(count);
+            }, 300);
+        });
 
-let savedCount =
-localStorage.getItem("basvuruSayisi");
+        /* Butona tıklanınca */
+        applyBtn.addEventListener("click", () => {
+            const prev = count;
+            count++;
+            savedExtra++;
+            localStorage.setItem(STORAGE_KEY, savedExtra);
 
-if(savedCount){
+            /* Sayacı güncelle */
+            animateTo(prev, count, 400);
+            updateProgress(count);
 
-    count = parseInt(savedCount);
+            /* Sayı parlar */
+            counterEl.style.color     = "#b9f6ca";
+            counterEl.style.textShadow = "0 0 30px rgba(100,255,180,.9)";
+            setTimeout(() => {
+                counterEl.style.color      = "#fff";
+                counterEl.style.textShadow = "0 0 20px rgba(255,255,255,.5)";
+            }, 400);
 
-    counter.innerText = count;
+            /* Zıplama */
+            counterEl.style.transform = "scale(1.25)";
+            setTimeout(() => { counterEl.style.transform = "scale(1)"; }, 300);
 
-}
+            /* +1 etiketi */
+            const plusOne = document.createElement("span");
+            plusOne.className   = "plus-one";
+            plusOne.textContent = "+1";
+            applyBtn.appendChild(plusOne);
+            setTimeout(() => plusOne.remove(), 850);
 
-/* Butona tıklayınca */
+            /* Formu yeni sekmede aç */
+            setTimeout(() => window.open(FORM_URL, "_blank"), 300);
+        });
 
-applyBtn.addEventListener("click",()=>{
-
-    count++;
-
-    counter.innerText = count;
-
-    /* Kaydet */
-
-    localStorage.setItem(
-    "basvuruSayisi",
-    count
-    );
-
-    /* Animasyon */
-
-    counter.style.transform =
-    "scale(1.25)";
-
-    counter.style.transition =
-    ".3s";
-
-    setTimeout(()=>{
-
-        counter.style.transform =
-        "scale(1)";
-
-    },300);
-
-});
-
+        /* Yıldız efekti */
+        const starsEl = document.getElementById("stars");
+        for (let i = 0; i < 120; i++) {
+            const star = document.createElement("div");
+            star.classList.add("star");
+            star.style.left              = Math.random() * 100 + "%";
+            star.style.top               = Math.random() * 100 + "%";
+            star.style.animationDuration = (Math.random() * 3 + 2) + "s";
+            star.style.opacity           = Math.random();
+            starsEl.appendChild(star);
+        }
     </script>
 
 </body>
-
 </html>
