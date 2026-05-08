@@ -389,13 +389,14 @@
 
                         </div>
 
-                        <a class="button"
-                            href="https://docs.google.com/forms/d/e/1FAIpQLSdDw3E1q6AY-wvwvXmoq5vbflJofPN-OW0UVBdFseLySR8Ntw/viewform"
-                            target="_blank">
+                        <a class="btn"
+id="applyBtn"
+href="https://docs.google.com/forms/d/e/1FAIpQLSdDw3E1q6AY-wvwvXmoq5vbflJofPN-OW0UVBdFseLySR8Ntw/viewform"
+target="_blank">
 
-                            Hemen Başvur
+Hemen Başvur
 
-                        </a>
+</a>
 
                     </div>
 
@@ -468,6 +469,55 @@
             stars.appendChild(star);
 
         }
+        /* BUTONA BASILINCA SAYI ARTSIN */
+
+const applyBtn =
+document.getElementById("applyBtn");
+
+/* localStorage'dan kayıtlı sayıyı çek */
+
+let savedCount =
+localStorage.getItem("basvuruSayisi");
+
+if(savedCount){
+
+    count = parseInt(savedCount);
+
+    counter.innerText = count;
+
+}
+
+/* Butona tıklayınca */
+
+applyBtn.addEventListener("click",()=>{
+
+    count++;
+
+    counter.innerText = count;
+
+    /* Kaydet */
+
+    localStorage.setItem(
+    "basvuruSayisi",
+    count
+    );
+
+    /* Animasyon */
+
+    counter.style.transform =
+    "scale(1.25)";
+
+    counter.style.transition =
+    ".3s";
+
+    setTimeout(()=>{
+
+        counter.style.transform =
+        "scale(1)";
+
+    },300);
+
+});
 
     </script>
 
