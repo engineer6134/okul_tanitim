@@ -173,8 +173,8 @@ body{
 </div>
 
 <!-- 🎵 Görünmez Müzik (otomatik çalar, hiçbir arayüz yok) -->
-<audio id="hidden-audio" autoplay loop>
-  <source src="music.mp3" type="audio/mpeg">
+<audio id="bgMusic" autoplay muted loop>
+    <source src="music.mp3" type="audio/mpeg">
 </audio>
 
 <!-- 🎯 Sınıf Butonları -->
@@ -188,6 +188,16 @@ body{
 <div id="footer">✦ Hayırlı olsun sevgili mezunlar (Ali AKDOĞAN) ✦</div>
 
 <script>
+  const music = document.getElementById("bgMusic");
+
+window.addEventListener("load", () => {
+    music.play();
+
+    document.body.addEventListener("click", () => {
+        music.muted = false;
+        music.play();
+    }, { once: true });
+});
 // ================================================================
 //  CANVAS KURULUMU
 // ================================================================
